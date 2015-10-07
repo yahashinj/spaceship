@@ -1,9 +1,10 @@
 require "gosu"
+require_relative 'z_order'
 
 class Spaceship
 
 	TURN_INCREMENT = 4.5
-	ACCELERATION = .5
+	ACCELERATION = 0.5
 	
 	def initialize
 		@x = @y = @vel_x = @vel_y = @angle = 0.0
@@ -12,7 +13,7 @@ class Spaceship
 	end
 
 	def warp(x, y)
-		@x = @y = x,y
+		@x, @y = x,y
 	end
 
 	def turn_left
@@ -40,7 +41,7 @@ class Spaceship
 	end
 
 	def draw
-		@image.draw_rot(@x, @y, 1, @angle)
+		@image.draw_rot(@x, @y, ZOrder::PLAYER, @angle)
 	end
 
 end
