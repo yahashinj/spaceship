@@ -1,7 +1,12 @@
 require "gosu"
 require_relative 'spaceship'
+require_relative 'stars'
+require_relative 'bomb'
+require_relative 'timer'
 	class GameWindow < Gosu::Window
-	
+		
+		
+
 		def initialize
 			super 640, 480
 			self.caption = "Gosu Tutorial Game"
@@ -10,6 +15,15 @@ require_relative 'spaceship'
 																					:tileable => true)
 			@spaceship = Spaceship.new
 			@spaceship.warp(width/2.0, height/2.0)
+
+			@star_anim = Gosu::Image::load_tiles("media/star.png", 25, 25)
+			@stars = Array.new
+
+			@bomb_anim = Gosu::Image::load_tiles("media/bomb.png", 150, 150)
+			@bombs = Array.new
+
+			@font = Gosu::Font.new(20)
+			@font = Gosu::Font.new(20)
 		end
 
 		def update
@@ -18,17 +32,35 @@ require_relative 'spaceship'
 			@spaceship.accelerate if Gosu::button_down? Gosu::KbUp
 
 			@spaceship.move
-			
+			@spaceship.collect_stars(@stars)
+
+			if rand(100) < 5 && @stars.size < 10000
+				@stars.push(Star.new(@star_anim))
+			end
+
+			if rand(1000) < 1 && @bombs.size < 1
+				@bombs.push(Bomb.new(@bomb_anim))
+			end
+
+
+
 		end
 
 		def draw
 			@spaceship.draw
 			@background_image.draw(0, 0 , ZOrder::BACKGROUND)
+			@stars.each { |star| star.draw }
+			@bombs.each { |bomb| bomb.draw }
+
+			@font.draw("Score: #{@spaceship.score}", 10, 10, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
+			@font.draw("Time: #{@timer.time}", 100, 10, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
 		end
 
 		def button_down(id)
 			close if id == Gosu::KbEscape
 		end
+
+		
 
 
 	end
