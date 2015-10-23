@@ -15,13 +15,6 @@ class Bomb
  		img.draw(@x, @y, ZOrder::BOMB)
  	end
  	
- 	def explode
- 		if should_explode
- 			# img = @animation[Gosu::milliseconds / 1000 % @animation.size]
- 			for n in 0..@animation.size
- 				img = @animation[n]
- 			end
- 		end
- 	end
+ 	
 
  end 

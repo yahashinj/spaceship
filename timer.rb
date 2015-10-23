@@ -1,17 +1,27 @@
 require "Gosu"
-
+require_relative 'z_order'
+require_relative 'spaceship'
 class Timer
+	attr_reader :time_left
 
-	def intitialize
-		@time = 3
-	end
-	def update
-		time -= 0.01
-		print time
+	def initialize(player)
+		@time_left = 150
+
+		@player = player
 	end
 
-
-	def time
-		@time
+	def print_out
+		if @time_left > 1
+			@time_left -= 0.01
+			"Time left: #{@time_left.truncate}"
+		else
+			"GAME OVER"
+		end
 	end
+
+	def game_over?
+		@time_left <= 1
+		
+	end
+
 end

@@ -3,6 +3,7 @@ require_relative 'spaceship'
 require_relative 'stars'
 require_relative 'bomb'
 require_relative 'timer'
+require_relative 'z_order'
 	class GameWindow < Gosu::Window
 		
 		
@@ -21,12 +22,14 @@ require_relative 'timer'
 
 			@bomb_anim = Gosu::Image::load_tiles("media/bomb.png", 150, 150)
 			@bombs = Array.new
-
-			@font = Gosu::Font.new(20)
+			@timer = Timer.new(@spaceship)
 			@font = Gosu::Font.new(20)
 		end
 
 		def update
+			# return if @timer.game_over?
+			# return if @player.death?
+
 			@spaceship.turn_left if Gosu::button_down? Gosu::KbLeft
 			@spaceship.turn_right if Gosu::button_down? Gosu::KbRight
 			@spaceship.accelerate if Gosu::button_down? Gosu::KbUp
@@ -38,7 +41,7 @@ require_relative 'timer'
 				@stars.push(Star.new(@star_anim))
 			end
 
-			if rand(1000) < 1 && @bombs.size < 1
+			if rand(1000) < 5 && @bombs.size < 5
 				@bombs.push(Bomb.new(@bomb_anim))
 			end
 
@@ -53,7 +56,8 @@ require_relative 'timer'
 			@bombs.each { |bomb| bomb.draw }
 
 			@font.draw("Score: #{@spaceship.score}", 10, 10, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
-			@font.draw("Time: #{@timer.time}", 100, 10, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
+			@font.draw("#{@timer.print_out}", 100, 10, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
+			@font.draw("#{@spaceship.health}", 400, 10, ZOrder::UI, 1.0, 1.0, 0xff_ffff00)
 		end
 
 		def button_down(id)

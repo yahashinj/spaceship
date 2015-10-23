@@ -3,6 +3,7 @@ require_relative 'z_order'
 require_relative 'stars'
 
 class Spaceship
+	attr_reader :score, :health
 
 	TURN_INCREMENT = 4.5
 	ACCELERATION = 0.5
@@ -11,6 +12,7 @@ class Spaceship
 	def initialize
 		@x = @y = @vel_x = @vel_y = @angle = 0.0
 		@score = 0
+		@health = 100
 		@image = Gosu::Image.new("media/starfighter.bmp")
 	end
 
@@ -58,6 +60,20 @@ class Spaceship
 
 	def touching_bomb?(bomb)
 		bombs.reject! {|bomb| Gosu::distance(@x, @y, bomb.x, bomb.y) < COLLISION_DISTANCE }
+	end
+
+	def health
+		@health
+	end
+
+	def bombed(bombs)
+		if bombs.reject! {|bomb| colliding?(bomb)}
+			@health -= 10
+		end
+	end
+
+	def death?
+		@health <= 0
 	end
 
 	private
