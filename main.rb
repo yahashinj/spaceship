@@ -12,15 +12,15 @@ require_relative 'z_order'
 			super 640, 480
 			self.caption = "Gosu Tutorial Game"
 
-			@background_image = Gosu::Image.new("media/space.png", 
+			@background_image = Gosu::Image.new("media/background-halloween.png", 
 																					:tileable => true)
 			@spaceship = Spaceship.new
 			@spaceship.warp(width/2.0, height/2.0)
 
-			@star_anim = Gosu::Image::load_tiles("media/star.png", 25, 25)
+			@star_anim = Gosu::Image::load_tiles("media/apple.png", 144, 194)
 			@stars = Array.new
 
-			@bomb_anim = Gosu::Image::load_tiles("media/bomb.png", 150, 150)
+			@bomb_anim = Gosu::Image::load_tiles("media/pumpkin.png", 150, 150)
 			@bombs = Array.new
 			@timer = Timer.new(@spaceship)
 			@font = Gosu::Font.new(20)
@@ -36,12 +36,13 @@ require_relative 'z_order'
 
 			@spaceship.move
 			@spaceship.collect_stars(@stars)
+			@spaceship.touching_bomb?(@bombs)
 
 			if rand(100) < 5 && @stars.size < 10000
 				@stars.push(Star.new(@star_anim))
 			end
 
-			if rand(1000) < 5 && @bombs.size < 5
+			if rand(500) < 1 && @bombs.size < 25
 				@bombs.push(Bomb.new(@bomb_anim))
 			end
 

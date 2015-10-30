@@ -6,7 +6,7 @@ class Star
 
 	def initialize(animation)
 		@animation = animation
-		@color = Gosu::Color.new(0xff_000000)
+		@color = Gosu::Color.new(0x00_000000)
 		@color.red = random_color_not_too_dark
 		@color.green = random_color_not_too_dark
 		@color.blue = random_color_not_too_dark
@@ -21,7 +21,7 @@ class Star
 			@x - img.width / 2.0,
 			@y - img.height / 2.0,
 			ZOrder::STARS,
-			1, 1, @color, :add)
+			0.3, 0.3, @color, :add)
 	end
 
 	private

@@ -58,8 +58,11 @@ class Spaceship
 		end
 	end
 
-	def touching_bomb?(bomb)
-		bombs.reject! {|bomb| Gosu::distance(@x, @y, bomb.x, bomb.y) < COLLISION_DISTANCE }
+	def touching_bomb?(bombs)
+		if bombs.reject! {|bomb| Gosu::distance(@x, @y, bomb.x, bomb.y - 35) < COLLISION_DISTANCE + 35 } then
+			@health -= 5
+		end
+
 	end
 
 	def health
